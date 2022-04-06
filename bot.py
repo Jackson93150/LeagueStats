@@ -1,4 +1,5 @@
 from pydoc import doc
+from turtle import position
 from bs4 import BeautifulSoup
 import requests
 import csv
@@ -103,19 +104,24 @@ plt.scatter(Play,Wr, c=kmeans.labels_, cmap='rainbow')
 plt.tight_layout()
 plt.show()
 
+
+position = []
 if(len(kmeans.labels_)) >= 10 :
     comp = kmeans.labels_[0]
     count = 0
+    other = []
     for i in range(6):
         if kmeans.labels_[i] == comp :
             count += 1
+        else :
+            other.append(kmeans.labels_[i])
     if count != 6 :
-        print("The best champions are : ")
-        for i in range(6):
-            if kmeans.labels_[i] == comp :
-                print(name[i])
-with open("data2.csv", "w" , newline='') as new_file:
-    writer = csv.writer(new_file)
-    writer.writerow(["Name", "Label"])
-    for i in range(len(name)):
-        writer.writerow([name[i],kmeans.labels_[i]])
+        with open("data2.csv", "w" , newline='') as new_file:
+            writer = csv.writer(new_file)
+            writer.writerow(["Winrate", "KDA"])
+            for i in range(len(name)) :
+                if kmeans.labels_[i] == other[0] or kmeans.labels_[i] == comp:
+                    position.append(i)
+                    writer.writerow([wr[i],kda[i]])
+        
+#print(position)
