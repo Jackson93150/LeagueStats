@@ -4,6 +4,7 @@ from turtle import position
 from bs4 import BeautifulSoup
 import requests
 import csv
+import random
 from urllib.request import Request, urlopen
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -175,6 +176,8 @@ data2 = pd.read_csv("data2.csv")
 Win = data2['Winrate']
 Kda = data2['KDA']
 clust = 3
+if len(position) < 2 :
+    clust = 1 
 kmeans2 = KMeans(n_clusters=clust,init='random',n_init=10, max_iter=100, random_state=0)
 kmeans2.fit_predict(data2)
 #print(kmeans2.cluster_centers_)
@@ -244,6 +247,7 @@ Bestp.reverse()
 longueur = []
 largeur = []
 maxi = clust
+exeption = clust
 print("Vos meilleur champions sont : ")
 if len(Bestp) < clust :
     clust = len(Bestp)
@@ -258,9 +262,10 @@ clust = 3
 if len(Worstp) < clust :
     clust = len(Worstp)
 maxi += clust
-print("Vos pires champions sont : ")
-for i in range(clust):
-    print(name[Worstp[i]])
+if exeption != 1:
+    print("Vos pires champions sont : ")
+    for i in range(clust):
+        print(name[Worstp[i]])
 
 df = pd.read_csv('data_stats.csv')
 a = df.loc[:,"Winrate"]
@@ -316,5 +321,52 @@ def calcul(predict):
         d = 'Iron'
     return d
 
-print("Votre MMR sur vos meilleur champion à un niveau : " + calcul(predict))
+print("Votre MMR sur vos meilleurs champion à un niveau : " + calcul(predict))
 
+def streak(p):
+    wrlose = 0
+    if p >= 150 :
+        wrlose = 1
+    elif p >= 100 :
+        wrlose = 1.5
+    elif p >= 75 :
+        wrlose = 2.5
+    elif p >= 50 :
+        wrlose = 4
+    else :
+        wrlose = 5
+    return wrlose
+
+
+def rank_objectif():
+    winratechamp = 0
+    for i in range(len(Bestp)):
+        winratechamp += wr[Bestp[i]]
+    winratechamp /= len(Bestp)
+    lp = points(RankTier)
+    partie = 0
+    checkpoint = 0
+    gameplayed = played[Bestp[0]]
+    while lp <= 2000 :
+        if random.randint(0,100) < winratechamp :
+            lp += 15
+            checkpoint += 15
+        else :
+            lp -= 15
+            checkpoint += 15
+        if checkpoint == 100 :
+            winratechamp -= streak(gameplayed)
+            checkpoint = 0
+        partie += 1
+        gameplayed += 1
+        if(partie == 2000):
+            break
+    return partie
+
+gamemoy = 0
+for i in range(25):
+    gamemoy += rank_objectif()
+
+gamemoy /= 25
+
+print("si vous continuer a jouer comme ca il vous faudra environ " + str(int(gamemoy)) + " parties avec vos meilleur champion pour atteindre le rang Diamant")
