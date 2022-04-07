@@ -9,6 +9,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import KMeans 
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
 
 url = "https://euw.op.gg/summoners/euw/TheDaeye/champions"
 hdr = {'User-Agent': 'Mozilla/5.0'}
@@ -67,6 +70,63 @@ for tr in table.find_all('tr') :
     played.append(int(p))
 played.pop(0)
 
+url = "https://www.leagueofgraphs.com/summoner/euw/TheDaeye"
+req = Request(url,headers=hdr)
+page = urlopen(req)
+soup = BeautifulSoup(page,features="html.parser")
+tier = soup.find(class_ = "leagueTier").text.strip()
+stripped = tier.split(' ', 1)[0]
+RankTier = []
+RankTier.append(stripped)
+
+wrs = []
+ratios = []
+names = []
+rank = []
+for i in range(7):
+    with open('sample'+str(i)+'.html', 'r') as f:
+        soup = BeautifulSoup(f, 'html.parser')
+        for tr in soup.find_all('tr') :
+            c = 0
+            for td in tr.find_all('td') :
+                n = td.find("a")
+                p = td.find('span', {"class": "value"})
+                r = td.find('span', {"class": "ratio"})
+                if n is not None:
+                    if c == 1:
+                        names.append(n.text.strip())
+                        if i == 0:
+                            rank.append("Iron")
+                        if i == 1:
+                            rank.append("Bronze")
+                        if i == 2:
+                            rank.append("Silver")
+                        if i == 3:
+                            rank.append("Gold")
+                        if i == 4:
+                            rank.append("Platinum")
+                        if i == 5:
+                            rank.append("Diamond")
+                        if i == 6:
+                            rank.append("Master")
+                    else:
+                        c += 1
+                if p is not None :
+                    p = p.text
+                    if p[-1] == "%" :
+                        p = p.replace("%","")
+                        wrs.append(float(p))
+                if r is not None :
+                    r = r.text
+                    ratios.append(float(r))
+
+with open("data_stats.csv", "w" , newline='') as new_file:
+    writer = csv.writer(new_file)
+    writer.writerow(["Name","Winrate", "KDA", "Rank"])
+    for i in range(len(wrs)):
+        writer.writerow([names[i],wrs[i],ratios[i],rank[i]])
+    
+
 #print(name)
 #print(played)
 #print(kda)
@@ -119,13 +179,13 @@ kmeans2 = KMeans(n_clusters=clust,init='random',n_init=10, max_iter=100, random_
 kmeans2.fit_predict(data2)
 #print(kmeans2.cluster_centers_)
 #print(kmeans2.labels_)
-plt.title('Champion Winrate')
-plt.xlabel('Winrate')
-plt.ylabel('KDA')
-plt.scatter(Win,Kda, c=kmeans2.labels_, cmap='rainbow')
-plt.scatter(kmeans2.cluster_centers_[:,0] ,kmeans2.cluster_centers_[:,1], color='black')
-plt.tight_layout()
-plt.show()
+#plt.title('Champion Winrate')
+#plt.xlabel('Winrate')
+#plt.ylabel('KDA')
+#plt.scatter(Win,Kda, c=kmeans2.labels_, cmap='rainbow')
+#plt.scatter(kmeans2.cluster_centers_[:,0] ,kmeans2.cluster_centers_[:,1], color='black')
+#plt.tight_layout()
+#plt.show()
 
 #print(position)
 lab = []
@@ -148,16 +208,27 @@ Best = []
 Worst = []
 Worstp = []
 Bestp = []
+val = 0
 
 for i in range(len(kmeans2.labels_)):
+    if kmeans2.labels_[i] == lab[clust-1]:
+        val += 1
+
+for i in range(len(kmeans2.labels_)):
+    if val < 3 :
+        if kmeans2.labels_[i] == lab[clust-1] or kmeans2.labels_[i] == lab[1] :
+            p = position[i]
+            Bestp.append(p)
+            Best.append(kda[p])
+    else :
+        if kmeans2.labels_[i] == lab[clust-1]:
+            p = position[i]
+            Bestp.append(p)
+            Best.append(kda[p])
     if kmeans2.labels_[i] == lab[0]:
         p = position[i]
         Worstp.append(p)
         Worst.append(kda[p])
-    if kmeans2.labels_[i] == lab[clust-1]:
-        p = position[i]
-        Bestp.append(p)
-        Best.append(kda[p])
 
 bubble_sort(Worst,Worstp)
 bubble_sort(Best,Bestp)
@@ -170,10 +241,80 @@ Bestp.reverse()
 #print(Bestp)
 #print(Best)
 
+longueur = []
+largeur = []
+maxi = clust
 print("Vos meilleur champions sont : ")
-for i in range(3):
-    print(name[Bestp[i]])
+if len(Bestp) < clust :
+    clust = len(Bestp)
+    maxi = clust
 
+for i in range(clust):
+    print(name[Bestp[i]])
+    longueur.append(wr[Bestp[i]])
+    largeur.append(kda[Bestp[i]])
+
+clust = 3
+if len(Worstp) < clust :
+    clust = len(Worstp)
+maxi += clust
 print("Vos pires champions sont : ")
-for i in range(3):
+for i in range(clust):
     print(name[Worstp[i]])
+
+df = pd.read_csv('data_stats.csv')
+a = df.loc[:,"Winrate"]
+b = df.loc[:,"KDA"]
+x = list(zip(a, b))
+y = df.loc[:,"Rank"]
+x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=0)
+knn = KNeighborsClassifier(n_neighbors = 159)
+knn.fit(x_train, y_train)
+
+predict = []
+for i in range(len(longueur)):
+    prediction = knn.predict([[longueur[i], largeur[i]]])
+    predict.append(str(prediction[0]))
+
+def points(list):
+    result = 0
+    for i in range(len(list)):
+        if list[i] == 'Iron':
+            result += 0
+        if list[i] == 'Bronze':
+            result += 400
+        if list[i] == 'Silver':
+            result += 800
+        if list[i] == 'Gold':
+            result += 1200
+        if list[i] == 'Platinum':
+            result += 1600
+        if list[i] == 'Diamond':
+            result += 2000
+        if list[i] == 'Master':
+            result += 2400
+    return result
+
+def calcul(predict):
+    result = points(predict)
+    d = result/len(predict)
+    ranking = points(RankTier)
+    d = (d+ranking)/2
+    if d > 2400 :
+        d = 'Master'
+    elif d > 2000:
+        d = 'Diamond'
+    elif d > 1600:
+        d = 'Platinum'
+    elif d > 1200:
+        d = 'Gold'
+    elif d > 800:
+        d = 'Silver'
+    elif d > 400:
+        d = 'Bronze'
+    elif d > -1:
+        d = 'Iron'
+    return d
+
+print("Votre MMR sur vos meilleur champion à un niveau : " + calcul(predict))
+
