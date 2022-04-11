@@ -1,0 +1,282 @@
+body {
+  display: center;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(#151426d5, #151426d5),
+    url("https://cdnb.artstation.com/p/assets/images/images/015/608/431/large/artur-sadlos-leg-duo-sh050-layoutenv-as-v007.jpg?1548951837");
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  z-index: 1;
+}
+
+.logo {
+  position: relative;
+  top: -300px;
+  left: 550px;
+  transform: rotate(10deg) scale(0.6);
+}
+
+.card {
+  position: relative;
+  width: 1000px;
+  height: 700px;
+  top: 150px;
+  left: -250px;
+  margin: 30px;
+  box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  background: rgba(0, 225, 255, 0.021);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(16, 221, 235, 0.466);
+  backdrop-filter: blur(5px);
+}
+
+
+input[type="text"] {
+  position: relative;
+  font-size: 40px;
+  color: grey;
+  top: 0px;
+  left: 210px;
+  background: #191426d5;
+  border: 1px solid rgba(235, 16, 82, 0.205);
+  outline: none;
+  padding: 0 25px;
+  border-radius: 0px 25px 25px 0px;
+}
+
+input[type="Submit"] {
+  visibility: hidden;
+}
+
+select {
+  position: relative;
+  background-color: #ff096767;
+  color: rgb(255, 255, 255);
+  padding: 12px;
+  width: 100px;
+  top: 48px;
+  left: 110px;
+  border: none;
+  font-size: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+  border-radius: 25px 0px 0px 25px;
+}
+
+select::before {
+  content: "\f13a";
+  font-family: FontAwesome;
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  font-size: 28px;
+  line-height: 45px;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+select:hover::before {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.result {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  top: 0px;
+  left: 0px;
+  margin: 30px;
+  border-radius: 15px;
+  background: #191426d5;
+  overflow: hidden;
+  display: flex;
+  border: 1px solid rgba(235, 16, 82, 0.205);
+  backdrop-filter: blur(5px);
+}
+
+.Bestimg
+{
+  position: relative;
+  transform: scale(0.5);
+  left: 30px;
+  top: -120px;
+}
+
+.Worstimg
+{
+  position: relative;
+  transform: scale(0.5);
+  left: -30px;
+  top: -120px;
+}
+
+.bccontain {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 90px;
+  left: -330px;
+  width: 320px;
+  height: 120px;
+}
+
+.bchamp1 {
+  position: absolute;
+  transform: scale(0.8);
+  left: 0px;
+}
+
+.bchamp2 {
+  position: absolute;
+  transform: scale(0.8);
+  left: 100px;
+}
+
+.bchamp3 {
+  position: absolute;
+  transform: scale(0.8);
+  left: 200px;
+}
+
+.wccontain {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 90px;
+  left: -410px;
+  width: 320px;
+  height: 120px;
+}
+
+.wchamp1 {
+  position: absolute;
+  transform: scale(0.8);
+  left: 0px;
+}
+
+.wchamp2 {
+  position: absolute;
+  transform: scale(0.8);
+  left: 100px;
+}
+
+.wchamp3 {
+  position: absolute;
+  transform: scale(0.8);
+  left: 200px;
+}
+
+.ligne1
+{
+  position: absolute;
+  top: 225px;
+  left: 50px;
+  width: 700px;
+  border: 1px solid rgba(16, 221, 235, 0.466);
+}
+
+.mmrimg
+{
+  position: relative;
+  transform: scale(0.5);
+  top: 100px;
+  left: -800px;
+}
+
+.mmr
+{
+  position: relative;
+  top: 350px;
+  left: -1080px;
+  transform: scale(1.2);
+}
+
+.reach {
+  position: absolute;
+  width: 360px;
+  height: 220px;
+  top: 230px;
+  left: 380px;
+  margin: 20px;
+  border-radius: 15px;
+  background: rgba(0, 225, 255, 0.021);
+  overflow: hidden;
+  display: flex;
+  border: 1px solid rgba(16, 221, 235, 0.466);
+  backdrop-filter: blur(5px);
+}
+
+.reachimg
+{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -12px;
+  left: 5px;
+  width: 80px;
+}
+
+.reachimg1
+{
+  position: relative;
+  transform: scale(0.5);
+  left: 120px;
+}
+
+.reachimg2
+{
+  position: relative;
+  transform: scale(0.5);
+  left: 25px;
+}
+
+.reachimg3
+{
+  position: relative;
+  transform: scale(0.5);
+  left: -70px;
+}
+
+.reachimg4
+{
+  position: relative;
+  transform: scale(0.45);
+  top: -55px;
+  left: -80px;
+}
+
+.diamond
+{
+  position: relative;
+  transform: scale(1.2);
+  top: 50px;
+  left: -500px;
+}
