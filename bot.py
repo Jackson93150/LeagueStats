@@ -138,6 +138,18 @@ def result():
                         img.append(ig)
                         rimg.append("https://lolg-cdn.porofessor.gg/img/s/league-icons-v3/160/"+str(i+1)+".png?v=8")
 
+    names.append("None")
+    wrs.append(0)
+    ratios.append(0)
+    rank.append("GrandMaster")
+    img.append("")
+    rimg.append("https://lolg-cdn.porofessor.gg/img/s/league-icons-v3/160/8.png?v=8")
+    names.append("None")
+    wrs.append(0)
+    ratios.append(0)
+    rank.append("Challenger")
+    img.append("")
+    rimg.append("https://lolg-cdn.porofessor.gg/img/s/league-icons-v3/160/9.png?v=8")
     with open("data_stats.csv", "w" , newline='') as new_file:
         writer = csv.writer(new_file)
         writer.writerow(["Name","Winrate", "KDA", "Rank","Image","RImg"])
@@ -326,11 +338,15 @@ def result():
             d = 'Bronze'
         elif d > -1:
             d = 'Iron'
+        if RankTier[0] == 'Challenger':
+            d = 'Challenger'
+        if RankTier[0] == 'GrandMaster':
+            d = 'GrandMaster'
         return d
 
     #print("Votre MMR sur vos meilleurs champion à un niveau : " + calcul(predict))
     mmr = calcul(predict)
-    for i in range(1014):
+    for i in range(1116):
         if mmr == df.loc[i,"Rank"]:
             mmr = df.loc[i,"RImg"]
             break
@@ -356,10 +372,14 @@ def result():
             winratechamp += wr[Bestp[i]]
         winratechamp /= len(Bestp)
         lp = points(RankTier)
+        if RankTier[0] == 'Challenger':
+            lp = 3200
+        if RankTier[0] == 'GrandMaster':
+            lp = 2800
         partie = 0
         checkpoint = 0
         gameplayed = played[Bestp[0]]
-        while lp <= 2000 :
+        while lp < 2000 :
             if random.randint(0,100) < winratechamp :
                 lp += 15
                 checkpoint += 15

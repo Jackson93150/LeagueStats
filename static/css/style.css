@@ -20,6 +20,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  width: 100%;
   z-index: 1;
 }
 
@@ -279,4 +280,29 @@ select:hover::before {
   transform: scale(1.2);
   top: 50px;
   left: -500px;
+}
+
+.maybe
+{
+  position: relative;
+  transform: scale(0.5);
+  top: -50px;
+  left: -110px;
+}
+
+@media only screen and (max-width: 1635px){
+
+  .container{
+    height: 930px;
+  }
+
+  .logo {
+    top: -80px;
+    left: 0px;
+  }
+
+  .card {
+    top: -180px;
+    left: -20px;
+  }
 }

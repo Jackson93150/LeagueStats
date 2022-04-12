@@ -53,19 +53,22 @@
                             <div class="mmrimg"><img src="{{ url_for('static', filename='css/mmr.png') }}"/></div>
                             <div class="mmr"><img src = "{{ Mmr }}" /></div>
                             <div class="reach">
-                                <div class="reachimg">
-                                    {% if partie[0] %}
-                                    <div class="reachimg1"><img src= {{ partie[0] }} /></div>
-                                    {% endif %}
-                                    {% if partie[1] %}
-                                        <div class="reachimg2"><img src= {{ partie[1] }} /></div>
-                                    {% endif %}
-                                    {% if partie[2] %}
-                                        <div class="reachimg3"><img src= {{ partie[2] }} /></div>
-                                    {% endif %}
-                                </div>
-                                {% if gamemoy < 1000 %}
-                                    <div class="reachimg4"><img src= "{{ url_for('static', filename='css/reach.png') }}" /></div>
+                                {% if gamemoy < 1000 and gamemoy != 0 and gamemoy != 1 %}
+                                    <div class="reachimg">
+                                        {% if partie[0] %}
+                                        <div class="reachimg1"><img src= {{ partie[0] }} /></div>
+                                        {% endif %}
+                                        {% if partie[1] %}
+                                            <div class="reachimg2"><img src= {{ partie[1] }} /></div>
+                                        {% endif %}
+                                        {% if partie[2] %}
+                                            <div class="reachimg3"><img src= {{ partie[2] }} /></div>
+                                        {% endif %}
+                                    </div>
+                                        <div class="reachimg4"><img src= "{{ url_for('static', filename='css/reach.png') }}" /></div>
+                                {% endif %}
+                                {% if gamemoy == 1000 %}
+                                    <div class="maybe"><img src="{{ url_for('static', filename='css/else.png') }}"/></div>
                                 {% endif %}
                                 <div class="diamond"><img src="https://lolg-cdn.porofessor.gg/img/s/league-icons-v3/160/6.png?v=8" /></div>
                             </div>
