@@ -18,9 +18,8 @@ def home():
 
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
-    output = request.form.to_dict()
-    selectregion = output['region']
-    summonername = output['name']
+    selectregion = request.form.get('region')
+    summonername = request.form.get('name')
     summonername =  urllib.parse.quote(summonername)
     url = "https://euw.op.gg/summoners/"+selectregion+"/"+ summonername +"/champions"
     hdr = {'User-Agent': 'Mozilla/5.0'}
@@ -429,4 +428,5 @@ def result():
     return render_template("index.html",bestchamp = imgurl,worstchamp = bimgurl,Mmr = mmr,partie = nbpartie,gamemoy = int(gamemoy))
 
 if __name__ == "__main__":
-    app.run(debug=True,port = 5001)
+    app.debug = True
+    app.run()
