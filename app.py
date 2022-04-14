@@ -428,4 +428,5 @@ def result():
     return render_template("index.html",bestchamp = imgurl,worstchamp = bimgurl,Mmr = mmr,partie = nbpartie,gamemoy = int(gamemoy))
 
 if __name__ == "__main__":
-    app.run(debug=True,port = 5001)
+    app.debug = True
+    app.run()
